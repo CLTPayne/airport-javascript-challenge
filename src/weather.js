@@ -1,13 +1,9 @@
 'use strict';
 
 function Weather() {
+  this._CHANCE_OF_STORMY = 0.5;
+}
 
 Weather.prototype.isStormy = function () {
-  let chanceOfStormy = 0.1;
-  if (Math.random() < chanceOfStormy) {
-    return true;
-  }
-  return false;
+  return (Math.random() > this._CHANCE_OF_STORMY);
 };
-
-}

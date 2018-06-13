@@ -14,20 +14,31 @@ describe('Feature test:', function() {
     airport = new Airport;
   });
 
-  it('instructs a plane to land at an airport', function() {
-    plane.land(airport);
-    expect(airport.planes()).toContain(plane);
+  describe('under normal conditions', function() {
+    beforeEach(function(){
+      spyOn(Math, 'random').and.returnValue(0);
+    });
+
+    it('instructs a plane to land at an airport', function() {
+      plane.land(airport);
+      expect(airport.planes()).toContain(plane);
+    });
+
+    // As an air traffic controller
+    // To get passengers to a destination
+    // I want to instruct a plane to take off from
+    //   an airport and confirm that it is no longer in the airport
+
+      it('instructs a plane to take off from an airport', function() {
+        plane.land(airport);
+        plane.takeOff();
+        expect(airport.planes()).not.toContain(plane);
+      });
+
   });
 
-// As an air traffic controller
-// To get passengers to a destination
-// I want to instruct a plane to take off from
-//   an airport and confirm that it is no longer in the airport
+  describe('under stormy conditions', function() {
 
-  it('instructs a plane to take off from an airport', function() {
-    plane.land(airport);
-    plane.takeOff();
-    expect(airport.planes()).not.toContain(plane);
   });
 
   // As an air traffic controller
@@ -35,8 +46,9 @@ describe('Feature test:', function() {
   // I want to prevent takeoff when weather is stormy
 
   it('prevents takeoff when the weather is stormy', function() {
+    spyOn(Math, 'random').and.returnValue(0);
     plane.land(airport);
-    spyOn(airport, 'isStormy').and.returnValue(true);
+    spyOn(airport._weather, 'isStormy').and.returnValue(true);
     expect(function() { plane.takeOff(); }).toThrowError('Not safe to take off!');
     expect(airport.planes()).toContain(plane);
   });
@@ -46,7 +58,7 @@ describe('Feature test:', function() {
   // I want to prevent landing when weather is stormy
 
   it('prevents landing when the weather is stormy', function() {
-    spyOn(airport, 'isStormy').and.returnValue(true);
+    spyOn(Math, 'random').and.returnValue(1);
     expect(function() { plane.land(airport); }).toThrowError('Not safe to land!');
     expect(airport.planes()).not.toContain(plane);
   });
