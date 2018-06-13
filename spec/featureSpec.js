@@ -12,7 +12,7 @@ describe('Feature test:', function() {
   beforeEach(function(){
     plane = new Plane;
     airport = new Airport;
-  })
+  });
 
   it('instructs a plane to land at an airport', function() {
     plane.land(airport);
@@ -37,10 +37,19 @@ describe('Feature test:', function() {
   it('prevents takeoff when the weather is stormy', function() {
     plane.land(airport);
     spyOn(airport, 'isStormy').and.returnValue(true);
-    expect(function() { plane.takeOff(); }).toThrowError('Not safe to take off!')
+    expect(function() { plane.takeOff(); }).toThrowError('Not safe to take off!');
     expect(airport.planes()).toContain(plane);
   });
 
+  // As an air traffic controller
+  // To ensure safety
+  // I want to prevent landing when weather is stormy
+
+  it('prevents landing when the weather is stormy', function() {
+    spyOn(airport, 'isStormy').and.returnValue(true);
+    expect(function() { plane.land(airport); }).toThrowError('Not safe to land!');
+    expect(airport.planes()).not.toContain(plane);
+  });
 
 
 });
